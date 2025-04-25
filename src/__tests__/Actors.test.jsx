@@ -77,3 +77,4 @@ test("renders the <NavBar /> component", () => {
   );
   expect(document.querySelector(".navbar")).toBeInTheDocument();
 });
+

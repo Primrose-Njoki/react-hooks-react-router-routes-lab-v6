@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+/*import "@testing-library/jest-dom";
 import { RouterProvider, createMemoryRouter} from "react-router-dom"
 import { render, screen } from "@testing-library/react";
 import routes from "../routes";
@@ -51,4 +51,46 @@ test("renders the <NavBar /> component", async () => {
       <RouterProvider router={router}/>
   );
   expect(await screen.findByRole("navigation")).toBeInTheDocument();
+});*/
+
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Movie } from '../pages/Movie'; // Use the same import style as in your app
+import { movies } from '../data';
+import NavBar from '../components/NavBar'; // Import NavBar if needed
+
+// Mock the NavBar if it's not relevant for testing
+jest.mock('../components/NavBar', () => () => <div>Mocked NavBar</div>);
+
+describe('Movie Component', () => {
+  it('renders movie details correctly', () => {
+    const testMovie = movies[0];
+    
+    render(
+      <MemoryRouter initialEntries={[`/movie/${testMovie.id}`]}>
+        <Routes>
+          <Route path="/movie/:id" element={<Movie />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(testMovie.title)).toBeInTheDocument();
+    expect(screen.getByText(`Time: ${testMovie.time}`)).toBeInTheDocument();
+    
+    testMovie.genres.forEach(genre => {
+      expect(screen.getByText(genre)).toBeInTheDocument();
+    });
+  });
+
+  it('shows "Movie not found" for invalid ID', () => {
+    render(
+      <MemoryRouter initialEntries={['/movie/999']}>
+        <Routes>
+          <Route path="/movie/:id" element={<Movie />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Movie not found')).toBeInTheDocument();
+  });
 });

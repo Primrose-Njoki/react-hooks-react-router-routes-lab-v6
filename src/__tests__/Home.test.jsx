@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+/*import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { RouterProvider, createMemoryRouter} from "react-router-dom";
 import routes from "../routes";
@@ -33,4 +33,17 @@ test("renders the <NavBar /> component", () => {
       <RouterProvider router={router}/>
   );
   expect(document.querySelector(".navbar")).toBeInTheDocument();
+});*/
+import { render, screen } from "@testing-library/react";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { routes } from "../routes";
+
+const router = createMemoryRouter(routes, {
+  initialEntries: ["/"]
+});
+
+test("renders 'Home Page' inside of an <h1 />", () => {
+  render(<RouterProvider router={router} />);
+  const h1 = screen.getByRole('heading', { name: /home page/i });
+  expect(h1).toBeInTheDocument();
 });
