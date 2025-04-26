@@ -133,6 +133,7 @@ describe('Movie Component', () => {
         <Routes>
           <Route path="/movies/:id" element={<Movie />} />
         </Routes>
+        
       </MemoryRouter>
     );
 
