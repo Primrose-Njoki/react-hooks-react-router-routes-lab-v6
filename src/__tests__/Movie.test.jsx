@@ -53,7 +53,7 @@ test("renders the <NavBar /> component", async () => {
   expect(await screen.findByRole("navigation")).toBeInTheDocument();
 });*/
 
-import { render, screen } from '@testing-library/react';
+/*import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { Movie } from '../pages/Movie'; // Use the same import style as in your app
 import { movies } from '../data';
@@ -87,6 +87,51 @@ describe('Movie Component', () => {
       <MemoryRouter initialEntries={['/movie/999']}>
         <Routes>
           <Route path="/movie/:id" element={<Movie />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Movie not found')).toBeInTheDocument();
+  });
+});*/
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { describe, it, expect, vi } from 'vitest';
+import Movie from '../pages/Movie'; 
+import { movies } from '../data';
+import NavBar from '../components/NavBar';
+import '@testing-library/jest-dom/vitest';
+
+// Mock NavBar
+vi.mock('../components/NavBar', () => ({
+  default: () => <div>Mocked NavBar</div>
+}));
+
+describe('Movie Component', () => {
+  it('renders movie details correctly', () => {
+    const testMovie = movies[0];
+    
+    render(
+      <MemoryRouter initialEntries={[`/movies/${testMovie.id}`]}>
+        <Routes>
+          <Route path="/movies/:id" element={<Movie />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(testMovie.title)).toBeInTheDocument();
+    expect(screen.getByText(`Time: ${testMovie.time}`)).toBeInTheDocument();
+    
+    testMovie.genres.forEach(genre => {
+      expect(screen.getByText(genre)).toBeInTheDocument();
+    });
+  });
+
+  it('shows "Movie not found" for invalid ID', () => {
+    render(
+      <MemoryRouter initialEntries={['/movies/999']}>
+        <Routes>
+          <Route path="/movies/:id" element={<Movie />} />
         </Routes>
       </MemoryRouter>
     );

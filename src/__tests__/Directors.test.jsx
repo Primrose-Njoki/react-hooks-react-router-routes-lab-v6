@@ -70,7 +70,7 @@ test("renders the <NavBar /> component", () => {
   expect(document.querySelector(".navbar")).toBeInTheDocument();
 });*/
 
-import "@testing-library/jest-dom";
+/*import "@testing-library/jest-dom/vitest";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import { routes } from "../routes";
@@ -107,4 +107,43 @@ describe("Directors Page", () => {
   });
 
   // ... (rest of the tests remain the same)
+});*/
+import "@testing-library/jest-dom/vitest"; 
+import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
+import { describe, test, expect, vi } from "vitest"; // Import from vitest
+import { routes } from "../routes";
+import Directors from "../pages/Directors";
+
+// Mock the directors data (using Vitest's vi.mock)
+vi.mock("../data", () => ({
+  directors: [
+    { name: "Scott Derrickson", movies: ["Doctor Strange", "Sinister", "The Exorcism of Emily Rose"] },
+    { name: "Mike Mitchell", movies: ["Trolls", "Alvin and the Chipmunks: Chipwrecked", "Sky High"] },
+    { name: "Edward Zwick", movies: ["Jack Reacher: Never Go Back", "Blood Diamond", "The Siege"] },
+  ],
+}));
+
+// Create router instance
+const router = createMemoryRouter(routes, {
+  initialEntries: ["/directors"],
+  initialIndex: 0,
+});
+
+describe("Directors Page", () => {
+  test("renders without any errors", () => {
+    const errorSpy = vi.spyOn(global.console, "error"); // <-- Changed to vi.spyOn
+    render(<RouterProvider router={router} />);
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  test("renders 'Directors Page' inside of an <h1 />", () => {
+    render(<RouterProvider router={router} />);
+    const h1 = screen.getByRole("heading", { name: /Directors Page/i });
+    expect(h1).toBeInTheDocument();
+    expect(h1.tagName).toBe("H1");
+  });
+
+  // ... rest of your tests
 });
