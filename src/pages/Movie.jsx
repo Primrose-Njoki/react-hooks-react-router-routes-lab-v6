@@ -20,6 +20,7 @@
 }
 export default Movie */
 import { useParams } from 'react-router-dom';
+import { movies } from '../data'; 
 
 function Movie() {
   const { id } = useParams();
@@ -39,3 +40,4 @@ function Movie() {
     </div>
   );
 }
+export default Movie
