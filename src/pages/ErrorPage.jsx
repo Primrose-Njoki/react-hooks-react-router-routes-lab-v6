@@ -2,6 +2,7 @@ import NavBar from "../components/NavBar";
 
 function ErrorPage() {
   return (
+    
     <>
       <NavBar />
       
