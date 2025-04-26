@@ -61,9 +61,12 @@ test("renders a <li /> for each movie", async () => {
   render(<RouterProvider router={router}/>);
   for (const actor of actors) {
     for (const movie of actor.movies) {
-      const li = await screen.findByText(movie, { exact: false });
-      expect(li).toBeInTheDocument();
-      expect(li.tagName).toBe("LI");
+      const li = await screen.findAllByText(movie);
+     // const li = await screen.findByText(movie, { exact: false });
+     expect(li).toHaveLength(1);
+
+     // expect(li).toBeInTheDocument();
+      expect(li[0].tagName).toBe("LI");
     }
   }
 });

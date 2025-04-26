@@ -19,8 +19,8 @@ export const movies = [
   
   export const actors = [
     {
-      name: "Actor 1",
-      movies: ["Movie X", "Movie Y"]
+      name: "Benedict Cumberbatch",
+      movies: ["Doctor Strange", "The Imitation Game", "Black Mass"],
     },
     // Add more actors
   ];
